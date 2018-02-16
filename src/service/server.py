@@ -43,6 +43,9 @@ class SevenSegmentDisplayServicer(service_pb2_grpc.SevenSegmentDisplayServicer):
         self._display_thread.join()
         self._display_thread = None
 
+    def shutdown(self):
+        self._cancel_display_thread()
+
 
 EXTRACT_DIGITS_FALLBACK = (' ', ' ', ' ', ' ')
 VALID_DIGITS = set([

@@ -63,12 +63,13 @@ def main(is_test):
     server.add_secure_port(address, server_credentials)
 
     server.start()
-    print('Server started on %s' % address)
+    print('PID=%d Server started on %s' % (os.getpid(), address))
     try:
         while True:
             signal.pause()
     except KeyboardInterrupt:
         pass
+    servicer.shutdown()
     server.stop(0)
 
 
