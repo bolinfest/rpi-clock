@@ -1,0 +1,4 @@
+*.pyc
+
+/certs/
+/gen/

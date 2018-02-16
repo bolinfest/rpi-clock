@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+message Empty {}
+
+message Display {
+  // A string of four characters.
+  string digits = 1;
+  // Whether the colon is displayed.
+  bool colon = 2;
+}
+
+message ClockOptions {
+  bool is24hour = 1;
+}
+
+message CounterOptions {
+  // Inclusive.
+  int32 start = 1;
+  // Exclusive.
+  int32 end = 2;
+  int32 increment = 3;
+}
+
+service SevenSegmentDisplay {
+  rpc GetDisplay(Empty) returns (Display) {}
+  rpc SetDisplay(Display) returns (Empty) {}
+  rpc EnableClock(ClockOptions) returns (Empty) {}
+  rpc EnableCounter(CounterOptions) returns (Empty) {}
+}

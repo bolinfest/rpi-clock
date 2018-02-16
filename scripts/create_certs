@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+import common
+import os
+import subprocess
+
+
+def main():
+    repo_root = common.find_repo_root()
+
+    certs_dir = os.path.join(repo_root, 'certs')
+    common.mkdirp(certs_dir)
+
+    config = common.read_config()
+    hostname = common.get_hostname(config)
+    subprocess.check_call([
+        'openssl',
+        'req',
+        '-x509',
+        '-newkey',
+        'rsa:4096',
+        '-keyout',
+        os.path.join(certs_dir, 'server.key'),
+        '-out',
+        os.path.join(certs_dir, 'server.crt'),
+        '-nodes',
+        '-subj',
+        '/CN=%s' % hostname
+    ],
+    cwd=repo_root)
+
+
+if __name__ == '__main__':
+    main()

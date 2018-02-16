@@ -1,0 +1,3 @@
+[server]
+hostname = "raspberrypi.local"
+port = 1337
