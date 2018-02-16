@@ -10,6 +10,8 @@ class SevenSegmentDisplayServicer(service_pb2_grpc.SevenSegmentDisplayServicer):
     def __init__(self, controller):
         self._controller = controller
         self._display_thread = None
+        # Put the server in "clock" mode, by default.
+        self._enable_clock()
 
     def GetDisplay(self, request, context):
         clock_state = self._controller.get_state()
@@ -25,10 +27,13 @@ class SevenSegmentDisplayServicer(service_pb2_grpc.SevenSegmentDisplayServicer):
         return service_pb2.Empty()
 
     def EnableClock(self, request, context):
+        self._enable_clock()
+        return service_pb2.Empty()
+
+    def _enable_clock(self):
         self._cancel_display_thread()
         self._display_thread = ClockThread(self._controller)
         self._display_thread.start()
-        return service_pb2.Empty()
 
     def EnableCounter(self, request, context):
         self._cancel_display_thread()
