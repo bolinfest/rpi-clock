@@ -25,8 +25,13 @@ export default class App extends React.Component {
   }
 }
 
+// TODO(mbolin): Read values from config.toml.
+const HOSTNAME = 'raspberrypi.local';
+const PORT = 8081;
+const HOST = `${HOSTNAME}:${PORT}`;
+
 async function useClockMode() {
-  await fetch('http://raspberrypi.local:8081/clock', {
+  await fetch(`http://${HOST}/clock`, {
     method: 'POST',
     headers: {
       'X-XSRF': '1',
@@ -35,7 +40,7 @@ async function useClockMode() {
 }
 
 async function useCounter() {
-  await fetch('http://raspberrypi.local:8081/count_up', {
+  await fetch(`http://${HOST}/count_up`, {
     method: 'POST',
     headers: {
       'X-XSRF': '1',
