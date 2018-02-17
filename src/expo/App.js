@@ -5,15 +5,21 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>For now, your only options are to toggle between clock and counter</Text>
-        <Button
-          title="Clock"
-          onPress={useClockMode}
-        />
-        <Button
-          title="Counter"
-          onPress={useCounter}
-        />
+        <View style={styles.row}>
+          <Text>Heading</Text>
+        </View>
+        <View style={styles.row}>
+          <Button
+            title="Clock"
+            onPress={useClockMode}
+          />
+        </View>
+        <View style={styles.row}>
+          <Button
+            title="Counter"
+            onPress={useCounter}
+          />
+        </View>
       </View>
     );
   }
@@ -43,5 +49,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });
