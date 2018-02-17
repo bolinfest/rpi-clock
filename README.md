@@ -5,7 +5,33 @@ Raspberry Pi.
 The display can work in various ways (clock, countdown timer, etc.),
 which is exposed via a gRPC interface.
 
+## Installation Requirements on the Raspberry Pi
+
+The following needs to be installed on the Raspberry Pi that is going to run the
+gRPC server.
+
+*These were done on a fresh install of the "lite" version of Raspbian GNU/Linux
+9 (stretch).*
+
+* [Enable kernel support for I2C](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c). (This is done via `sudo raspi-config`.)
+* It's a good idea to do this before installing the other packages: `sudo apt-get update`
+* Many of the scripts use `git rev-parse --show-toplevel`, so `git` must be
+  installed: `sudo apt-get install git`
+* This adds `easy_install`: `sudo apt-get install python-setuptools`
+* `sudo easy_install pip`
+* Installing `grpcio` relies on this: `sudo apt-get install python-dev`
+* Installs the `grpcio` Python package for the gRPC server (warning: this may
+  take over 30 minutes): `sudo python -m pip install grpcio`
+* Used to read `config.toml`: `sudo python -m pip install toml`
+* This is what makes it possible to control the 7-segment display:
+  `sudo easy_install Adafruit_LED_Backpack`
+* (Optional) Used to run the webserver: `sudo python -m pip install bottle.`
+
 ## i2c Permissions
+
+(You can skip this step if the user running the gRPC server already has
+read/write access to `/dev/i2c*`. Use `id` to see if your user is already in the
+`i2c` group.)
 
 By default, the permissions of the `i2c` devices should look like this:
 
