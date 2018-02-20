@@ -1,62 +1,33 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+// @flow
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <Text>Heading</Text>
-        </View>
-        <View style={styles.row}>
-          <Button
-            title="Clock"
-            onPress={useClockMode}
-          />
-        </View>
-        <View style={styles.row}>
-          <Button
-            title="Counter"
-            onPress={useCounter}
-          />
-        </View>
-      </View>
-    );
-  }
-}
+// $FlowFixMe: Unclear why this is in the default ignore list.
+import {StackNavigator} from 'react-navigation';
+import ClockSettings from './ClockSettings';
+import CounterSettings from './CounterSettings';
+import HomeScreen from './HomeScreen';
 
-// TODO(mbolin): Read values from config.toml.
-const HOSTNAME = 'raspberrypi.local';
-const PORT = 8081;
-const HOST = `${HOSTNAME}:${PORT}`;
-
-async function useClockMode() {
-  await fetch(`http://${HOST}/clock`, {
-    method: 'POST',
-    headers: {
-      'X-XSRF': '1',
+export default StackNavigator(
+  {
+    ClockSettings: {
+      screen: ClockSettings,
     },
-  });
-}
-
-async function useCounter() {
-  await fetch(`http://${HOST}/count_up`, {
-    method: 'POST',
-    headers: {
-      'X-XSRF': '1',
+    CounterSettings: {
+      screen: CounterSettings,
     },
-  });
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    Home: {
+      screen: HomeScreen,
+    },
   },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
+  {
+    initialRouteName: 'Home',
+    navigationOptions: {
+      title: 'Clock',
+      headerStyle: {
+        backgroundColor: 'rgb(0, 102, 0)',
+      },
+      headerTitleStyle: {
+        color: 'white',
+      },
+    },
   },
-});
+);
