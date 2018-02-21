@@ -13,6 +13,7 @@ class SevenSegmentDisplayServicer(segment7_pb2_grpc.SevenSegmentDisplayServicer)
         self._display.set_digit(2, d2)
         self._display.set_digit(3, d3)
         self._display.set_colon(request.colon)
+        self._display.write_display()
         return segment7_pb2.Empty()
 
     def shutdown(self):
