@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
 
 function formatDisplay(display): string {
   const {digits, colon} = display;
+  const chars = ' '.repeat(4 - digits.length) + digits;
   // TODO(mbolin): Honor `colon` when displaying.
-  return digits.substring(0, 2) + ':' + digits.substring(2, 4);
+  return chars.substring(0, 2) + ':' + chars.substring(2, 4);
 }
