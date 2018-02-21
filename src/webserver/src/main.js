@@ -25,13 +25,14 @@ function main() {
 
   const host = config.getWebserverHost();
   const [hostname, port] = host.split(':');
-  console.log(`Starting rpi-clock webserver on ${hostname}:${port}`);
+  console.error(`Starting rpi-clock webserver on ${hostname}:${port}`);
   server.listen(port, hostname);
 }
 
 function createHandler(config) {
   const cert = fs.readFileSync(__dirname + '/../../../certs/server.crt');
   const controllerHost = config.getControllerHost();
+  console.error(`Connecting to controller on ${controllerHost}`);
   const controllerClient = new Controller(
     controllerHost,
     grpc.credentials.createSsl(cert)

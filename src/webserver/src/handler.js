@@ -9,6 +9,7 @@ class RequestHandler {
   }
 
   onRequest(request, response) {
+    console.error(`request to ${request.url}`);
     if (request.method !== 'POST') {
       return this._forbidden(response);
     }
@@ -22,9 +23,9 @@ class RequestHandler {
       const options = {is24Hour: false};
       this._client.enableClock(options, err => {
         if (err == null) {
-          this._ok(response);
+          return this._ok(response);
         } else {
-          this._error(response, err.toString());
+          return this._error(response, err.toString());
         }
       });
     } else if (url === '/count_up') {
@@ -35,9 +36,9 @@ class RequestHandler {
       };
       this._client.enableCounter(options, err => {
         if (err == null) {
-          this._ok(response);
+          return this._ok(response);
         } else {
-          this._error(response, err.toString());
+          return this._error(response, err.toString());
         }
       });
     } else {
