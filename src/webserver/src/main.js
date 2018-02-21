@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const grpc = require('grpc');
-const {createRequestHandler} = require('./handler');
+const {createRequestHandler, createWebSocket} = require('./handler');
 const {createConfig} = require('common/Config');
 
 const CONTROLLER_PROTO_PATH =
@@ -19,9 +19,7 @@ const {Controller} = protoDescriptor;
 
 function main() {
   const config = createConfig();
-  const handler = createHandler(config);
-  const server = http.createServer();
-  server.addListener('request', handler);
+  const server = createServer(config);
 
   const host = config.getWebserverHost();
   const [hostname, port] = host.split(':');
@@ -29,7 +27,7 @@ function main() {
   server.listen(port, hostname);
 }
 
-function createHandler(config) {
+function createServer(config) {
   const cert = fs.readFileSync(__dirname + '/../../../certs/server.crt');
   const controllerHost = config.getControllerHost();
   console.error(`Connecting to controller on ${controllerHost}`);
@@ -37,7 +35,12 @@ function createHandler(config) {
     controllerHost,
     grpc.credentials.createSsl(cert)
   );
-  return createRequestHandler(controllerClient);
+  const handler = createRequestHandler(controllerClient);
+
+  const server = http.createServer();
+  server.addListener('request', handler);
+  createWebSocket(controllerClient, server);
+  return server;
 }
 
 main();

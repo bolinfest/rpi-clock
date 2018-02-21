@@ -1,3 +1,7 @@
+const WebSocket = require('ws');
+const url = require('url');
+const {Observable} = require('rxjs/Observable');
+
 function createRequestHandler(client) {
   const handler = new RequestHandler(client);
   return handler.onRequest.bind(handler);
@@ -62,29 +66,47 @@ class RequestHandler {
   }
 }
 
-// TODO(mbolin): Set up a websocket to support subscribeToDisplay().
+function createWebSocket(controllerClient, server) {
+  const ws = new WebSocket.Server({server});
+  let numWebSocketConnections = 0;
+  ws.on('connection', (connection, req) => {
+    numWebSocketConnections++;
+    const location = url.parse(req.url, /* parseQueryString */ true);
+    if (location.pathname !== '/display') {
+      return;
+    }
 
-// const {Observable} = require('rxjs/Observable');
-// function subscribeToDisplay(client) {
-//   return Observable.create(observer => {
-//     const empty = new Empty();
-//     const call = client.subscribeToDisplay(empty);
-//     call.on('data', display => {
-//       observer.next(display);
-//     });
-//     call.on('status', status => console.error('Status:', status));
-//     call.on('end', () => observer.complete());
-//   });
-// }
-//
-// const observable = subscribeToDisplay(client);
-// const subscription = observable.subscribe({
-//   next: x => console.log('got value ', x),
-//   error: err => console.error('something wrong occurred: ' + err),
-//   complete: () => console.log('done'),
-// });
-// // Note: call subscription.unsubscribe(), as appropriate.
+    console.error(`New WebSocket connection: ${numWebSocketConnections}`);
+
+    // TODO(mbolin): Share one observable across all connections.
+    const observable = subscribeToDisplay(controllerClient);
+    const subscription = observable.subscribe(
+      (value) => connection.send(JSON.stringify(value)),
+      (err) => console.error('error in subscribeToDisplay() gRPC call: ', err),
+      () => console.error('subscribeToDisplay() complete')
+    );
+
+    connection.on('close', () => {
+      numWebSocketConnections--;
+      console.error(`WebSocket disconnected: ${numWebSocketConnections}`);
+      subscription.unsubscribe();
+    });
+  });
+}
+
+
+function subscribeToDisplay(client) {
+  return Observable.create(observer => {
+    const call = client.subscribeToDisplay({});
+    call.on('data', display => {
+      observer.next(display);
+    });
+    call.on('status', status => console.error('Status:', status));
+    call.on('end', () => observer.complete());
+  });
+}
 
 module.exports = {
   createRequestHandler,
+  createWebSocket,
 };
