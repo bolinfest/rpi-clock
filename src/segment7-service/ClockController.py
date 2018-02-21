@@ -5,7 +5,7 @@ class ClockController:
 
     def update(self, digit0, digit1, digit2, digit3, colon=False):
         new_state = ClockState(digit0, digit1, digit2, digit3, colon)
-        self._state.render_delta(new_state, self._display)
+        is_change = self._state.render_delta(new_state, self._display)
         self._state = new_state
 
     def get_state(self):
@@ -43,3 +43,4 @@ class ClockState:
 
         if is_change:
             display.write_display()
+        return is_change

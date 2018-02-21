@@ -34,14 +34,14 @@ DEFAULT_PORT = 1337
 
 
 def get_hostname(config):
-    server = config.get('server')
+    server = config.get('segment7-server')
     if server is None:
         return DEFAULT_HOSTNAME
     return server.get('hostname', DEFAULT_HOSTNAME)
 
 
 def get_port(config):
-    server = config.get('server')
+    server = config.get('segment7-server')
     if server is None:
         return DEFAULT_PORT
     return server.get('port', DEFAULT_PORT)

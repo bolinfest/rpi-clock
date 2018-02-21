@@ -25,7 +25,6 @@ gRPC server.
 * Used to read `config.toml`: `sudo python -m pip install toml`
 * This is what makes it possible to control the 7-segment display:
   `sudo easy_install Adafruit_LED_Backpack`
-* (Optional) Used to run the webserver: `sudo python -m pip install bottle.`
 
 ## i2c Permissions
 
@@ -70,5 +69,5 @@ sudo reboot
 ## gRPC Authentication
 
 Run `./scripts/create_certs` to generate `server.crt` and `server.key` in the
-`certs/` folder. The gRPC server needs both `servert.crt` and `server.key`
+`certs/` folder. The gRPC server needs both `server.crt` and `server.key`
 while a gRPC client needs only `server.crt`.

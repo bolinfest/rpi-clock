@@ -10,7 +10,7 @@ message Display {
 }
 
 message ClockOptions {
-  bool is24hour = 1;
+  bool is24Hour = 1;
 }
 
 message CounterOptions {
@@ -21,9 +21,8 @@ message CounterOptions {
   int32 increment = 3;
 }
 
-service SevenSegmentDisplay {
-  rpc GetDisplay(Empty) returns (Display) {}
-  rpc SetDisplay(Display) returns (Empty) {}
+service Controller {
   rpc EnableClock(ClockOptions) returns (Empty) {}
   rpc EnableCounter(CounterOptions) returns (Empty) {}
+  rpc SubscribeToDisplay(Empty) returns (stream Display) {}
 }

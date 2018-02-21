@@ -16,8 +16,8 @@ sys.path.append(
 import common
 import grpc
 import signal
-import service_pb2
-import service_pb2_grpc
+import segment7_pb2
+import segment7_pb2_grpc
 
 from ClockController import ClockController
 from concurrent import futures
@@ -38,23 +38,21 @@ def main(is_test):
     display.clear()
     display.write_display()
 
-    controller = ClockController(display)
-
+    # Read the certificate/key pair.
     repo_root = common.find_repo_root()
     certs_dir = os.path.join(repo_root, 'certs')
     with open(os.path.join(certs_dir, 'server.key')) as f:
         private_key = f.read()
     with open(os.path.join(certs_dir, 'server.crt')) as f:
         certificate_chain = f.read()
-
     server_credentials = grpc.ssl_server_credentials(((
         private_key,
         certificate_chain,
     ), ))
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-    servicer = SevenSegmentDisplayServicer(controller)
-    service_pb2_grpc.add_SevenSegmentDisplayServicer_to_server(
+    servicer = SevenSegmentDisplayServicer(display)
+    segment7_pb2_grpc.add_SevenSegmentDisplayServicer_to_server(
         servicer, server)
 
     config = common.read_config()

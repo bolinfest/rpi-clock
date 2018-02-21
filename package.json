@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "workspaces": [
+    "src/common",
+    "src/controller-service",
+    "src/webserver"
+  ]
+}

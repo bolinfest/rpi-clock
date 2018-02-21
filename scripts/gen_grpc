@@ -12,6 +12,11 @@ def main():
     grpc_dir = os.path.join(gen_dir, 'grpc')
     common.mkdirp(grpc_dir)
 
+    gen_grpc('src/segment7-service/segment7.proto', repo_root, grpc_dir)
+    gen_grpc('src/controller-service/controller.proto', repo_root, grpc_dir)
+
+
+def gen_grpc(proto_file, repo_root, grpc_dir):
     subprocess.check_call([
         'python',
         '-m',
@@ -20,11 +25,10 @@ def main():
         '--python_out=%s' % grpc_dir,
         '--grpc_python_out=%s' % grpc_dir,
         '--proto_path',
-        'src/interface',
-        'src/interface/service.proto',
+        os.path.dirname(proto_file),
+        proto_file,
     ],
     cwd=repo_root)
-
 
 if __name__ == '__main__':
     main()

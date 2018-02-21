@@ -1,3 +1,5 @@
-[server]
+[segment7-server]
+# Use "localhost" with `./scripts/run_grpc_server --test`.
+# hostname = "localhost"
 hostname = "raspberrypi.local"
 port = 1337
