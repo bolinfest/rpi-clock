@@ -22,6 +22,11 @@ export default StackNavigator(
     initialRouteName: 'Home',
     navigationOptions: {
       title: 'Clock',
+      gestureResponseDistance: {
+        // Make it easier to swipe right/left.
+        horizontal: 125,
+        vertical: 135,
+      },
       headerStyle: {
         backgroundColor: 'rgb(0, 102, 0)',
       },
