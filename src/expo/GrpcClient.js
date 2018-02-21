@@ -23,6 +23,9 @@ export default class GrpcClient {
       ws.onmessage = (event) => observer.next(JSON.parse(event.data));
       ws.onerror = (event) => observer.error(event.message);
       ws.onclose = (event) => observer.complete();
+      // Currently, we are designed to have one subscriber, so we close the
+      // connection when someone unsubscribes.
+      return () => ws.close();
     });
   }
 

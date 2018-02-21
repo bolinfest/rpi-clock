@@ -86,11 +86,14 @@ function createWebSocket(controllerClient, server) {
       () => console.error('subscribeToDisplay() complete')
     );
 
-    connection.on('close', () => {
+    function disconnect() {
       numWebSocketConnections--;
       console.error(`WebSocket disconnected: ${numWebSocketConnections}`);
       subscription.unsubscribe();
-    });
+    }
+
+    connection.on('close', disconnect);
+    connection.on('error', disconnect);
   });
 }
 
