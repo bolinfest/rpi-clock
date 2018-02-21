@@ -25,6 +25,10 @@ gRPC server.
 * Used to read `config.toml`: `sudo python -m pip install toml`
 * This is what makes it possible to control the 7-segment display:
   `sudo easy_install Adafruit_LED_Backpack`
+* `yarn` to install all the dependencies in the Yarn workspace.
+* Run `npm rebuild --build-from-source grpc` after running `yarn` due to
+  https://github.com/grpc/grpc/issues/13258. (Note that this step may take
+  hours: we should figure out how to cross-compile this instead.)
 
 ## i2c Permissions
 
