@@ -5,6 +5,7 @@ import type {Subscription} from 'rxjs/Observable';
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {Font} from 'expo';
+import Display from './Display';
 import GrpcClient from './GrpcClient';
 
 type Props = {
@@ -62,8 +63,8 @@ export default class HomeScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        <View style={styles.body}>
-          <Text style={styles.display}>{this.state.displayText}</Text>
+        <View style={styles.display}>
+          <Display isEditable={false} initialDisplayText={this.state.displayText} />
         </View>
         <View style={styles.row}>
           <Button
@@ -88,18 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-  body: {
-    flex: 1,
-  },
   display: {
-    backgroundColor: 'black',
-    color: '#F01',
-    fontFamily: 'segment7',
-    fontSize: 96,
     margin: 10,
-    padding: 10,
-    textShadowColor: '#C00',
-    textShadowOffset: {width: 1, height: 1},
   },
   row: {
     flexDirection: 'column',
