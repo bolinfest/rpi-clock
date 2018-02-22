@@ -1,6 +1,6 @@
 const {DISPLAY_CHANGED_EVENT} = require('./Segment7Controller');
 const {ClockAction} = require('./ClockAction');
-const {CountAction} = require('./CountAction');
+const {TimerAction} = require('./TimerAction');
 
 class Server {
   constructor(controller) {
@@ -24,16 +24,15 @@ class Server {
     this._replaceAction(clockAction);
   }
 
-  enableCounter(call, callback) {
-    const counterOptions = call.request;
-    this._enableCounterImpl(counterOptions);
+  startTimer(call, callback) {
+    const timerOptions = call.request;
+    this._startTimerImpl(timerOptions);
     callback(null, {});
   }
 
-  _enableCounterImpl(counterOptions) {
-    // TODO(mbolin): Honor counterOptions.
-    const countAction = new CountAction(this._controller);
-    this._replaceAction(countAction);
+  _startTimerImpl(timerOptions) {
+    const timerAction = new TimerAction(timerOptions.seconds, this._controller);
+    this._replaceAction(timerAction);
   }
 
   _replaceAction(newAction) {

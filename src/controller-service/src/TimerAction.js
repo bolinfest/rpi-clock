@@ -1,18 +1,21 @@
-class CountAction {
-  constructor(controller) {
+class TimerAction {
+  constructor(seconds, controller) {
+    this._seconds = seconds;
     this._controller = controller;
     this._id = null;
   }
 
   run() {
-    let i = 0;
+    // TODO(mbolin): Use precise timing logic.
+    let i = this._seconds;
     this._id = setInterval(async () => {
       await this._controller.update({
+        // TODO(mbolin): Formatting, e.g., 90s as 1m30s.
         digits: String(i),
         colon: false,
       });
-      i++;
-      if (i >= 10000) {
+      i--;
+      if (i < 0) {
         i = 0;
       }
     }, 1000);
@@ -27,5 +30,5 @@ class CountAction {
 }
 
 module.exports = {
-  CountAction,
+  TimerAction,
 };

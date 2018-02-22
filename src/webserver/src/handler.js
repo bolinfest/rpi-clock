@@ -32,18 +32,20 @@ class RequestHandler {
           return this._error(response, err.toString());
         }
       });
-    } else if (url === '/count_up') {
-      const options = {
-        start: 0,
-        end: 100,
-        increment: 1,
-      };
-      this._client.enableCounter(options, err => {
-        if (err == null) {
-          return this._ok(response);
-        } else {
-          return this._error(response, err.toString());
-        }
+    } else if (url === '/timer') {
+      let chunks = [];
+      request.on('data', chunk => chunks.push(chunk)).on('end', () => {
+        const body = Buffer.concat(chunks).toString();
+        const data = JSON.parse(body);
+        const {seconds} = data;
+
+        this._client.startTimer(seconds, err => {
+          if (err == null) {
+            return this._ok(response);
+          } else {
+            return this._error(response, err.toString());
+          }
+        });
       });
     } else {
       return this._forbidden(response);
@@ -81,8 +83,8 @@ function createWebSocket(controllerClient, server) {
     // TODO(mbolin): Share one observable across all connections.
     const observable = subscribeToDisplay(controllerClient);
     const subscription = observable.subscribe(
-      (value) => connection.send(JSON.stringify(value)),
-      (err) => console.error('error in subscribeToDisplay() gRPC call: ', err),
+      value => connection.send(JSON.stringify(value)),
+      err => console.error('error in subscribeToDisplay() gRPC call: ', err),
       () => console.error('subscribeToDisplay() complete')
     );
 
@@ -96,7 +98,6 @@ function createWebSocket(controllerClient, server) {
     connection.on('error', disconnect);
   });
 }
-
 
 function subscribeToDisplay(client) {
   return Observable.create(observer => {

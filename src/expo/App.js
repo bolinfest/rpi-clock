@@ -3,7 +3,7 @@
 // $FlowFixMe: Unclear why this is in the default ignore list.
 import {StackNavigator} from 'react-navigation';
 import ClockSettings from './ClockSettings';
-import CounterSettings from './CounterSettings';
+import TimerSettings from './TimerSettings';
 import HomeScreen from './HomeScreen';
 
 export default StackNavigator(
@@ -11,8 +11,8 @@ export default StackNavigator(
     ClockSettings: {
       screen: ClockSettings,
     },
-    CounterSettings: {
-      screen: CounterSettings,
+    TimerSettings: {
+      screen: TimerSettings,
     },
     Home: {
       screen: HomeScreen,

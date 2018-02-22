@@ -29,7 +29,7 @@ export default class HomeScreen extends React.Component<Props, State> {
   state = {
     fontLoaded: false,
     displaySubscription: null,
-    displayText: '',
+    displayText: ' ',
   };
 
   async componentDidMount() {
@@ -37,7 +37,7 @@ export default class HomeScreen extends React.Component<Props, State> {
       // Font is from http://torinak.com/7segment.
       'segment7': require('./assets/fonts/7segment.ttf'),
     });
-    displaySubscription = grpcClient.observeDisplay().subscribe(
+    const displaySubscription = grpcClient.observeDisplay().subscribe(
       (value) => this.setState({displayText: formatDisplay(value)}),
       (err) => this._unsubscribe(),
       () => this._unsubscribe(),
@@ -64,7 +64,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <View style={styles.display}>
-          <Display isEditable={false} initialDisplayText={this.state.displayText} />
+          <Display isEditable={false} displayText={this.state.displayText} />
         </View>
         <View style={styles.row}>
           <Button
@@ -74,8 +74,8 @@ export default class HomeScreen extends React.Component<Props, State> {
         </View>
         <View style={styles.row}>
           <Button
-            title="Counter"
-            onPress={() => this.props.navigation.navigate('CounterSettings', {grpcClient})}
+            title="Set Timer"
+            onPress={() => this.props.navigation.navigate('TimerSettings', {grpcClient})}
           />
         </View>
       </View>

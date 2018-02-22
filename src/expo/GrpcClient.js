@@ -12,8 +12,8 @@ export default class GrpcClient {
     return this._postToEndpoint('/clock');
   }
 
-  useCounter(): Promise<mixed> {
-    return this._postToEndpoint('/count_up');
+  startTimer(seconds: number): Promise<mixed> {
+    return this._postToEndpoint('/timer', {seconds});
   }
 
   observeDisplay(): Observable<mixed> {
@@ -29,12 +29,20 @@ export default class GrpcClient {
     });
   }
 
-  _postToEndpoint(endpoint: string): Promise<mixed> {
+  _postToEndpoint(endpoint: string, payload: ?Object = null): Promise<mixed> {
+    const headers = new Headers();
+    headers.append('X-XSRF', '1');
+
+    let body;
+    if (payload != null) {
+      body = JSON.stringify(payload);
+      headers.append('Accept', 'application/json');
+      headers.append('Content-Type', 'application/json');
+    }
     return fetch(`http://${this._host}${endpoint}`, {
       method: 'POST',
-      headers: {
-        'X-XSRF': '1',
-      },
+      headers,
+      body,
     });
   }
 }

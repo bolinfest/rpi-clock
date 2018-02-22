@@ -13,16 +13,12 @@ message ClockOptions {
   bool is24Hour = 1;
 }
 
-message CounterOptions {
-  // Inclusive.
-  int32 start = 1;
-  // Exclusive.
-  int32 end = 2;
-  int32 increment = 3;
+message TimerOptions {
+  uint32 seconds = 1;
 }
 
 service Controller {
   rpc EnableClock(ClockOptions) returns (Empty) {}
-  rpc EnableCounter(CounterOptions) returns (Empty) {}
+  rpc StartTimer(TimerOptions) returns (Empty) {}
   rpc SubscribeToDisplay(Empty) returns (stream Display) {}
 }

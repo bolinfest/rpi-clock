@@ -5,29 +5,13 @@ import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
 type Props = {
   isEditable: boolean,
-  initialDisplayText: string,
-};
-type State = {
   displayText: string,
+  onChangeText?: (text: string) => void,
 };
+type State = {};
 
 export default class Display extends React.Component<Props, State> {
   _myTextInput: ?TextInput;
-
-  componentWillMount() {
-    this._setDefaultState(this.props);
-  }
-
-  // We leverage componentWillReceiveProps() because we have state that is a
-  // function of props:
-  // https://discuss.reactjs.org/t/how-to-pass-in-initial-value-to-form-fields/869/15.
-  componentWillReceiveProps(nextProps: Props) {
-    this._setDefaultState(nextProps);
-  }
-
-  _setDefaultState(props: Props) {
-    this.setState({displayText: props.initialDisplayText});
-  }
 
   render() {
     const {isEditable} = this.props;
@@ -35,7 +19,7 @@ export default class Display extends React.Component<Props, State> {
     return (
       <View>
         <Text style={styles.display} onPress={onPress}>
-          {this.state.displayText}
+          {this.props.displayText}
         </Text>
         {isEditable ? (
           <TextInput
@@ -52,6 +36,11 @@ export default class Display extends React.Component<Props, State> {
   }
 
   _onChangeText(text: string) {
+    const {onChangeText} = this.props;
+    if (onChangeText == null) {
+      return;
+    }
+
     let displayText;
     let len = text.length;
     if (len === 0) {
@@ -64,7 +53,8 @@ export default class Display extends React.Component<Props, State> {
       const index = len - 2;
       displayText = text.substring(0, index) + ':' + text.substring(index);
     }
-    this.setState({displayText});
+
+    onChangeText(displayText);
   }
 
   _focus() {
