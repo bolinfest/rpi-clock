@@ -1,3 +1,5 @@
+const {pad} = require('./pad');
+
 class TimerAction {
   constructor(seconds, controller) {
     this._seconds = seconds;
@@ -10,8 +12,7 @@ class TimerAction {
     let i = this._seconds;
     this._id = setInterval(async () => {
       await this._controller.update({
-        // TODO(mbolin): Formatting, e.g., 90s as 1m30s.
-        digits: String(i),
+        digits: formatSeconds(i),
         colon: false,
       });
       i--;
@@ -26,6 +27,17 @@ class TimerAction {
       clearInterval(this._id);
       this._id = null;
     }
+  }
+}
+
+function formatSeconds(timeInSeconds) {
+  const seconds = timeInSeconds % 60;
+  const minutes = (timeInSeconds - seconds) / 60;
+  if (minutes > 0) {
+    return pad(minutes, ' ') + pad(seconds);
+  } else {
+    // Seconds only.
+    return '  ' + pad(seconds);
   }
 }
 

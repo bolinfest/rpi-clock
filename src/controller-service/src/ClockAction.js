@@ -1,3 +1,5 @@
+const {pad} = require('./pad');
+
 class ClockAction {
   constructor(is24Hour, controller) {
     this._is24Hour = is24Hour;
@@ -39,16 +41,6 @@ class ClockAction {
       clearInterval(this._id);
       this._id = null;
     }
-  }
-}
-
-function pad(n, ch = '0', size = 2) {
-  const s = String(n);
-  const len = s.length;
-  if (size > len) {
-    return ch.repeat(size - len) + s;
-  } else {
-    return s;
   }
 }
 
