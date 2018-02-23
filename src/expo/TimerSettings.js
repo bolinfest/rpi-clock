@@ -184,12 +184,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   hint2Text: {
-    marginBottom: 5,
     marginTop: 5,
+    marginBottom: 5,
   },
   timerButton: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 20,
     flex: 1,
   },
   timerButtons: {
