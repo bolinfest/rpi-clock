@@ -13,7 +13,7 @@ class TimerAction {
     this._id = setInterval(async () => {
       await this._controller.update({
         digits: formatSeconds(i),
-        colon: false,
+        colon: true,
       });
       i--;
       if (i < 0) {
