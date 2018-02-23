@@ -37,9 +37,6 @@ export default class HomeScreen extends React.Component<Props, State> {
       // Font is from http://torinak.com/7segment.
       'segment7': require('./assets/fonts/7segment.ttf'),
     });
-    // TODO(mbolin): An add RPC to get the current value of the display.
-    // As it stands, displayText will be empty until the display contents
-    // change, which is a weird experience.
     const displaySubscription = grpcClient.observeDisplay().subscribe(
       (value) => this.setState({displayText: formatDisplay(value)}),
       (err) => this._unsubscribe(),

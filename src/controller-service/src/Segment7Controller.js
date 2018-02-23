@@ -17,6 +17,12 @@ class Segment7Controller extends EventEmitter {
       this.emit(DISPLAY_CHANGED_EVENT, display);
     }
   }
+
+  getCurrentDisplay() {
+    // For safety, return a copy of this._currentDisplay.
+    // (Not using "object spread" in case running Node<8.3.)
+    return Object.assign({}, this._currentDisplay);
+  }
 }
 
 module.exports = {

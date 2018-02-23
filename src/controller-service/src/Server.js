@@ -44,6 +44,9 @@ class Server {
   }
 
   subscribeToDisplay(call) {
+    // Start by sending the current value of the display.
+    call.write(this._controller.getCurrentDisplay());
+
     const listener = display => call.write(display);
     this._controller.on(DISPLAY_CHANGED_EVENT, listener);
     call.on('end', () =>
