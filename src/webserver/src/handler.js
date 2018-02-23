@@ -93,7 +93,14 @@ function createWebSocket(controllerClient, server) {
     // TODO(mbolin): Share one observable across all connections.
     const observable = subscribeToDisplay(controllerClient);
     const subscription = observable.subscribe(
-      value => connection.send(JSON.stringify(value)),
+      value => {
+        // Workaround for https://github.com/websockets/ws/issues/464.
+        if (connection.readyState == WebSocket.CLOSING) {
+          return;
+        }
+
+        connection.send(JSON.stringify(value))
+      },
       err => console.error('error in subscribeToDisplay() gRPC call: ', err),
       () => console.error('subscribeToDisplay() complete')
     );
