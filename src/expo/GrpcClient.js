@@ -8,8 +8,8 @@ export default class GrpcClient {
     this._host = `${hostname}:${port}`;
   }
 
-  useClockMode(): Promise<mixed> {
-    return this._postToEndpoint('/clock');
+  useClockMode(is24Hour: boolean): Promise<mixed> {
+    return this._postToEndpoint('/clock', {is24Hour});
   }
 
   startTimer(seconds: number): Promise<mixed> {

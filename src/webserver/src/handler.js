@@ -12,7 +12,7 @@ class RequestHandler {
     this._client = client;
   }
 
-  onRequest(request, response) {
+  async onRequest(request, response) {
     console.error(`request to ${request.url}`);
     if (request.method !== 'POST') {
       return this._forbidden(response);
@@ -24,8 +24,9 @@ class RequestHandler {
 
     const {url} = request;
     if (url === '/clock') {
-      const options = {is24Hour: false};
-      this._client.enableClock(options, err => {
+      const data = await readRequestBody(request);
+      const {is24Hour} = data;
+      this._client.enableClock(is24Hour, err => {
         if (err == null) {
           return this._ok(response);
         } else {
@@ -33,19 +34,14 @@ class RequestHandler {
         }
       });
     } else if (url === '/timer') {
-      let chunks = [];
-      request.on('data', chunk => chunks.push(chunk)).on('end', () => {
-        const body = Buffer.concat(chunks).toString();
-        const data = JSON.parse(body);
-        const {seconds} = data;
-
-        this._client.startTimer(seconds, err => {
-          if (err == null) {
-            return this._ok(response);
-          } else {
-            return this._error(response, err.toString());
-          }
-        });
+      const data = await readRequestBody(request);
+      const {seconds} = data;
+      this._client.startTimer(seconds, err => {
+        if (err == null) {
+          return this._ok(response);
+        } else {
+          return this._error(response, err.toString());
+        }
       });
     } else {
       return this._forbidden(response);
@@ -66,6 +62,20 @@ class RequestHandler {
     response.writeHead(403);
     response.end();
   }
+}
+
+function readRequestBody(request) {
+  return new Promise((resolve, reject) => {
+    let chunks = [];
+    request
+      .on('data', chunk => chunks.push(chunk))
+      .on('end', () => {
+        const body = Buffer.concat(chunks).toString();
+        const data = JSON.parse(body);
+        resolve(data);
+      })
+      .on('error', reject);
+  });
 }
 
 function createWebSocket(controllerClient, server) {
