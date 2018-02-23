@@ -5,6 +5,7 @@ import {StackNavigator} from 'react-navigation';
 import ClockSettings from './ClockSettings';
 import TimerSettings from './TimerSettings';
 import HomeScreen from './HomeScreen';
+import {APP_GREEN} from './colors';
 
 export default StackNavigator(
   {
@@ -28,7 +29,7 @@ export default StackNavigator(
         vertical: 135,
       },
       headerStyle: {
-        backgroundColor: 'rgb(0, 102, 0)',
+        backgroundColor: APP_GREEN,
       },
       headerTitleStyle: {
         color: 'white',

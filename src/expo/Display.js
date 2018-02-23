@@ -1,7 +1,14 @@
 // @flow
 
 import React from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Button,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 type Props = {
   isEditable: boolean,
@@ -11,7 +18,13 @@ type Props = {
 type State = {};
 
 export default class Display extends React.Component<Props, State> {
+  _keyboardType: string;
   _myTextInput: ?TextInput;
+
+  constructor(props: Props) {
+    super(props);
+    this._keyboardType = Platform.OS === 'ios' ? 'number-pad' : 'numeric';
+  }
 
   render() {
     const {isEditable} = this.props;
@@ -23,7 +36,7 @@ export default class Display extends React.Component<Props, State> {
         </Text>
         {isEditable ? (
           <TextInput
-            keyboardType="numeric"
+            keyboardType={this._keyboardType}
             style={styles.hiddenInput}
             ref={ref => {
               this._myTextInput = ref;
