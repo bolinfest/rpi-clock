@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd `git rev-parse --show-toplevel`/src/controller-service
+node src/main.js
