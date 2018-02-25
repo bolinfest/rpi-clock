@@ -1,0 +1,12 @@
+# Note: this is an example config.toml file.
+# You must create your own config.toml file in the root of
+# the project before you can run any of the scripts.
+# Note that the defaults should work fine for most people,
+# so you can start out by creating an empty config.toml file
+# and add changes as necessary.
+
+[segment7-server]
+hostname = "raspberrypi.local"
+
+# Use "localhost" with `./scripts/run_grpc_server --test`.
+# hostname = "localhost"
