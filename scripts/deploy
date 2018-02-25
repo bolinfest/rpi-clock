@@ -6,7 +6,7 @@ import subprocess
 def main():
     repo_root = common.find_repo_root()
     config = common.read_config()
-    hostname = common.get_hostname(config)
+    hostname, _ = config.get_segment7_host()
     subprocess.check_call([
         'rsync',
         '-avz',

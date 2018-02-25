@@ -31,11 +31,11 @@ function main() {
   const cert = fs.readFileSync(__dirname + '/../../../certs/server.crt');
 
   const config = createConfig();
-  const host = config.getSegment7Host();
+  const segment7Host = config.getSegment7Host();
   const segment7Proto = grpc.load(SEGMENT7_PROTO_PATH);
   const {SevenSegmentDisplay} = segment7Proto;
   const syncClient = new SevenSegmentDisplay(
-    host,
+    `${segment7Host.hostname}:${segment7Host.port}`,
     grpc.credentials.createSsl(cert)
   );
   const asyncClient = new AsyncDisplayClient(syncClient);
@@ -52,7 +52,8 @@ function main() {
   const server = new grpc.Server();
   const controllerProto = grpc.load(CONTROLLER_PROTO_PATH);
   server.addService(controllerProto.Controller.service, serverImpl);
-  const controllerHost = config.getControllerHost();
+  const {hostname, port} = config.getControllerHost();
+  const controllerHost = `${hostname}:${port}`;
   server.bind(controllerHost, serverCredentials);
   console.log(`Starting controller-service on ${controllerHost}`);
   server.start();

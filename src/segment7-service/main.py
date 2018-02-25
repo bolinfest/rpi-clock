@@ -56,7 +56,7 @@ def main(is_test):
         servicer, server)
 
     config = common.read_config()
-    port = common.get_port(config)
+    _, port = config.get_segment7_host()
     address = '[::]:%d' % port
     server.add_secure_port(address, server_credentials)
 

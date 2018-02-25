@@ -1,3 +1,6 @@
+# This is generated via scripts/generate_app_json.
+/app.json
+
 node_modules/**/*
 .expo/*
 npm-debug.*

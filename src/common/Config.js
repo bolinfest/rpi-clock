@@ -1,11 +1,10 @@
+// This must stay in sync with scripts/common.py.
 const toml = require('toml');
 const fs = require('fs');
 
 const DEFAULT_SEGMENT7_HOSTNAME = 'raspberrypi.local';
 const DEFAULT_SEGMENT7_PORT = 1337;
-const DEFAULT_CONTROLLER_HOSTNAME = DEFAULT_SEGMENT7_HOSTNAME;
 const DEFAULT_CONTROLLER_PORT = 50051;
-const DEFAULT_WEBSERVER_HOSTNAME = '0.0.0.0';
 const DEFAULT_WEBSERVER_PORT = 8081;
 
 class Config {
@@ -22,17 +21,19 @@ class Config {
   }
 
   getControllerHost() {
+    const {hostname: defaultHostname} = this.getSegment7Host();
     return this._getHost(
       'controller-service',
-      DEFAULT_CONTROLLER_HOSTNAME,
+      defaultHostname,
       DEFAULT_CONTROLLER_PORT
     );
   }
 
   getWebserverHost() {
+    const {hostname: defaultHostname} = this.getSegment7Host();
     return this._getHost(
       'webserver',
-      DEFAULT_WEBSERVER_HOSTNAME,
+      defaultHostname,
       DEFAULT_WEBSERVER_PORT
     );
   }
@@ -52,7 +53,7 @@ class Config {
     if (port == null) {
       port = defaultPort;
     }
-    return `${hostname}:${port}`;
+    return {hostname, port};
   }
 }
 

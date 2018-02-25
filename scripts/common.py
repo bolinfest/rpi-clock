@@ -26,22 +26,55 @@ def mkdirp(path):
 def read_config():
     repo_root = find_repo_root()
     with open(os.path.join(repo_root, 'config.toml')) as f:
-        return toml.load(f)
+        data = toml.load(f)
+    return Config(data)
 
 
-DEFAULT_HOSTNAME = 'raspberrypi.local'
-DEFAULT_PORT = 1337
+# This must stay in sync with src/common/Config.js.
+DEFAULT_SEGMENT7_HOSTNAME = 'raspberrypi.local'
+DEFAULT_SEGMENT7_PORT = 1337
+DEFAULT_CONTROLLER_PORT = 50051
+DEFAULT_WEBSERVER_PORT = 8081
 
 
-def get_hostname(config):
-    server = config.get('segment7-server')
-    if server is None:
-        return DEFAULT_HOSTNAME
-    return server.get('hostname', DEFAULT_HOSTNAME)
+class Config:
+    def __init__(self, data):
+        self._data = data
 
+    def get_segment7_host(self):
+        return self._get_host(
+            'segment7-server',
+            DEFAULT_SEGMENT7_HOSTNAME,
+            DEFAULT_SEGMENT7_PORT,
+        )
 
-def get_port(config):
-    server = config.get('segment7-server')
-    if server is None:
-        return DEFAULT_PORT
-    return server.get('port', DEFAULT_PORT)
+    def get_controller_host(self):
+        default_hostname, _ = self.get_segment7_host()
+        return self._get_host(
+            'controller-service',
+            default_hostname,
+            DEFAULT_CONTROLLER_PORT,
+        )
+
+    def get_webserver_host(self):
+        default_hostname, _ = self.get_segment7_host()
+        return self._get_host(
+            'webserver',
+            default_hostname,
+            DEFAULT_WEBSERVER_PORT,
+        )
+
+    def _get_host(self, id, default_hostname, default_port):
+        server = self._data.get(id)
+        hostname = None
+        port = None
+        if server is not None:
+            hostname = server.get('hostname')
+            port = server.get('port')
+
+        if hostname is None:
+            hostname = default_hostname
+        if port is None:
+            port = default_port
+
+        return hostname, port

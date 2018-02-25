@@ -5,7 +5,7 @@ import type {ConnectionStatus} from './ConnectionStatusView';
 
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import {Font} from 'expo';
+import {Constants, Font} from 'expo';
 import ConnectionStatusView from './ConnectionStatusView';
 import Display from './Display';
 import GrpcClient from './GrpcClient';
@@ -23,11 +23,9 @@ type State = {
   retryTimeout: ?number,
 };
 
-// TODO(mbolin): Read values from config.toml.
-const HOSTNAME = 'raspberrypi.local';
-// const HOSTNAME = '192.168.1.55';
-const PORT = 8081;
-const grpcClient = new GrpcClient(HOSTNAME, PORT);
+const {extra} = Constants.manifest;
+const grpcClient = new GrpcClient(extra.webserverHostname, extra.webserverPort);
+
 // TODO(mbolin): Use exponential backoff. Note this requires additional state.
 const RETRY_TIMEOUT_MS = 10 * 1000;
 

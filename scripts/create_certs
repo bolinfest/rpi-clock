@@ -11,7 +11,7 @@ def main():
     common.mkdirp(certs_dir)
 
     config = common.read_config()
-    hostname = common.get_hostname(config)
+    hostname, _ = config.get_segment7_host()
     subprocess.check_call([
         'openssl',
         'req',

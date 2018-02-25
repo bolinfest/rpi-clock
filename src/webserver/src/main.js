@@ -21,15 +21,15 @@ function main() {
   const config = createConfig();
   const server = createServer(config);
 
-  const host = config.getWebserverHost();
-  const [hostname, port] = host.split(':');
+  const {hostname, port} = config.getWebserverHost();
   console.error(`Starting rpi-clock webserver on ${hostname}:${port}`);
   server.listen(port, hostname);
 }
 
 function createServer(config) {
   const cert = fs.readFileSync(__dirname + '/../../../certs/server.crt');
-  const controllerHost = config.getControllerHost();
+  const {hostname, port} = config.getControllerHost();
+  const controllerHost = `${hostname}:${port}`;
   console.error(`Connecting to controller on ${controllerHost}`);
   const controllerClient = new Controller(
     controllerHost,
