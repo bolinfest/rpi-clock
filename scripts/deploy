@@ -1,9 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env python
+import common
+import subprocess
 
-# TODO(mbolin): Read values from config.toml.
-cd `git rev-parse --show-toplevel`
-rsync -avz \
-  --exclude=node_modules \
-  --exclude=src/expo \
-  . \
-  pi@raspberrypi.local:/home/pi/src/rpi-clock
+
+def main():
+    repo_root = common.find_repo_root()
+    config = common.read_config()
+    hostname = common.get_hostname(config)
+    subprocess.check_call([
+        'rsync',
+        '-avz',
+        '--exclude=node_modules',
+        '--exclude=src/expo',
+        '.',
+        'pi@%s:/home/pi/src/rpi-clock' % hostname,
+    ],
+    cwd=repo_root)
+
+
+if __name__ == '__main__':
+    main()
