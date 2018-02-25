@@ -105,3 +105,26 @@ From the root of the project, run each of the following in its own terminal
 * `./scripts/run_segment7_server`
 * `./scripts/run_controller`
 * `./scripts/run_webserver`
+
+## Troubleshooting
+
+Unless you have changed it, your Pi likely defaults to having WiFi
+power saving turned *on*, which is not a great setting for something like a
+clock. Reading through [this answer](https://raspberrypi.stackexchange.com/questions/34794/how-to-disable-wi-fi-dongle-sleep-mode),
+you should diagnose this by running the following on your Pi:
+
+```
+iw wlan0 get power_save
+```
+
+If that returns:
+
+```
+Power save: on
+```
+
+Try turning power save off by running:
+
+```
+sudo iw wlan0 set power_save off
+```
