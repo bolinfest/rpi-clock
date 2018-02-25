@@ -1,5 +1,5 @@
 // @flow
-
+import {CLOCK_RED} from './colors';
 import React from 'react';
 import {
   Button,
@@ -80,7 +80,7 @@ export default class Display extends React.Component<Props, State> {
 const styles = StyleSheet.create({
   display: {
     backgroundColor: 'black',
-    color: '#F01',
+    color: CLOCK_RED,
     fontFamily: 'segment7',
     fontSize: 96,
     padding: 10,
