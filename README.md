@@ -75,3 +75,33 @@ sudo reboot
 Run `./scripts/create_certs` to generate `server.crt` and `server.key` in the
 `certs/` folder. The gRPC server needs both `server.crt` and `server.key`
 while a gRPC client needs only `server.crt`.
+
+## Develop and Deploy
+
+Assuming that you are developing the code on a machine other than the Raspberry
+Pi where the software will ultimately run, you should perform the initial build
+steps on your local machine:
+
+* Edit `config.toml` so that it has the proper values for your Pi.
+* Run `./scripts/create_certs`.
+* Run `./scripts/gen_app_json`.
+* Run `./scripts/gen_grpc`.
+
+Now you are ready to push the code to the Pi. Do this by running:
+
+```
+./scripts/deploy
+```
+
+Note that `./scripts/deploy` will not copy your local `node_modules` folder because
+you likely had to run `npm rebuild --build-from-source grpc` locally on the Pi and so
+you do not want the version of grpc built on your local machine to overwrite the one
+that was built for the Pi.
+
+Now ssh over to the Pi and `cd` to the directory where you pushed `rpi-clock`.
+From the root of the project, run each of the following in its own terminal
+(currently, each is a server that runs forever in the foreground):
+
+* `./scripts/run_segment7_server`
+* `./scripts/run_controller`
+* `./scripts/run_webserver`
