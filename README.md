@@ -110,7 +110,8 @@ From the root of the project, run each of the following in its own terminal
 
 Unless you have changed it, your Pi likely defaults to having WiFi
 power saving turned *on*, which is not a great setting for something like a
-clock. Reading through [this answer](https://raspberrypi.stackexchange.com/questions/34794/how-to-disable-wi-fi-dongle-sleep-mode),
+server that you want to be able to connect to 24/7. Reading through
+[this answer](https://raspberrypi.stackexchange.com/questions/34794/how-to-disable-wi-fi-dongle-sleep-mode),
 you should diagnose this by running the following on your Pi:
 
 ```
@@ -128,3 +129,7 @@ Try turning power save off by running:
 ```
 sudo iw wlan0 set power_save off
 ```
+
+To make this change permanent, consider adding `iwconfig wlan0 power off`
+to your [`/etc/rc.local`](https://www.raspberrypi.org/documentation/linux/usage/rc-local.md)
+so it will take effect on reboot.
