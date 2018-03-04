@@ -14,15 +14,19 @@ class RequestHandler {
 
   async onRequest(request, response) {
     console.error(`request to ${request.url}`);
-    if (request.method !== 'POST') {
+    const {method, headers, url} = request;
+    if (method === 'GET') {
+      return this._handleGet(request, response);
+    }
+
+    if (method !== 'POST') {
       return this._forbidden(response);
     }
 
-    if (request.headers['x-xsrf'] !== '1') {
+    if (headers['x-xsrf'] !== '1') {
       return this._forbidden(response);
     }
 
-    const {url} = request;
     if (url === '/clock') {
       const data = await readRequestBody(request);
       const {is24Hour} = data;
@@ -46,6 +50,20 @@ class RequestHandler {
     } else {
       return this._forbidden(response);
     }
+  }
+
+  _handleGet(request, response) {
+    response.writeHead(200);
+
+    const html = `<!doctype html>
+      <body>
+        Request made to host
+        <b>${escapeHtml(request.headers['host'])}</b>
+        at path:
+        <b>${escapeHtml(request.url)}</b>
+      </body>
+      </html>`;
+    response.end(html);
   }
 
   _ok(response) {
@@ -125,6 +143,10 @@ function subscribeToDisplay(client) {
     call.on('status', status => console.error('Status:', status));
     call.on('end', () => observer.complete());
   });
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 }
 
 module.exports = {
