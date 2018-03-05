@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const os = require('os');
 const url = require('url');
 const {Observable} = require('rxjs/Observable');
 
@@ -55,12 +56,33 @@ class RequestHandler {
   _handleGet(request, response) {
     response.writeHead(200);
 
+    const {wlan0} = os.networkInterfaces();
+    let ipv4;
+    let ipv6;
+    if (wlan0 != null) {
+      for (const {address, family} of wlan0) {
+        if (family === 'IPv4') {
+          ipv4 = address;
+        } else if (family === 'IPv6') {
+          ipv6 = address;
+        }
+      }
+    }
+
     const html = `<!doctype html>
       <body>
-        Request made to host
-        <b>${escapeHtml(request.headers['host'])}</b>
-        at path:
-        <b>${escapeHtml(request.url)}</b>
+        <p>
+          Request made to host
+          <b>${escapeHtml(request.headers['host'])}</b>
+          at path:
+          <b>${escapeHtml(request.url)}</b>
+        </p>
+        <p>
+          IPV4: <b>${escapeHtml(ipv4)}</b>
+        </p>
+        <p>
+          IPV6: <b>${escapeHtml(ipv6)}</b>
+        </p>
       </body>
       </html>`;
     response.end(html);
