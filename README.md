@@ -10,23 +10,23 @@ which is exposed via a gRPC interface.
 The following needs to be installed on the Raspberry Pi that is going to run the
 gRPC server.
 
-*These were done on a fresh install of the "lite" version of Raspbian GNU/Linux
-9 (stretch).*
+_These were done on a fresh install of the "lite" version of Raspbian GNU/Linux
+9 (stretch)._
 
-* [Enable kernel support for I2C](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c). (This is done via `sudo raspi-config`.)
-* It's a good idea to do this before installing the other packages: `sudo apt-get update`
-* Many of the scripts use `git rev-parse --show-toplevel`, so `git` must be
+- [Enable kernel support for I2C](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c). (This is done via `sudo raspi-config`.)
+- It's a good idea to do this before installing the other packages: `sudo apt-get update`
+- Many of the scripts use `git rev-parse --show-toplevel`, so `git` must be
   installed: `sudo apt-get install git`
-* This adds `easy_install`: `sudo apt-get install python-setuptools`
-* `sudo easy_install pip`
-* Installing `grpcio` relies on this: `sudo apt-get install python-dev`
-* Installs the `grpcio` Python package for the gRPC server (warning: this may
+- This adds `easy_install`: `sudo apt-get install python-setuptools`
+- `sudo easy_install pip`
+- Installing `grpcio` relies on this: `sudo apt-get install python-dev`
+- Installs the `grpcio` Python package for the gRPC server (warning: this may
   take over 30 minutes): `sudo python -m pip install grpcio`
-* Used to read `config.toml`: `sudo python -m pip install toml`
-* This is what makes it possible to control the 7-segment display:
+- Used to read `config.toml`: `sudo python -m pip install toml`
+- This is what makes it possible to control the 7-segment display:
   `sudo easy_install Adafruit_LED_Backpack`
-* `yarn` to install all the dependencies in the Yarn workspace.
-* Run `npm rebuild --build-from-source grpc` after running `yarn` due to
+- `yarn` to install all the dependencies in the Yarn workspace.
+- Run `npm rebuild --build-from-source grpc` after running `yarn` due to
   https://github.com/grpc/grpc/issues/13258. (Note that this step may take
   hours: we should figure out how to cross-compile this instead.)
 
@@ -82,10 +82,10 @@ Assuming that you are developing the code on a machine other than the Raspberry
 Pi where the software will ultimately run, you should perform the initial build
 steps on your local machine:
 
-* Edit `config.toml` so that it has the proper values for your Pi.
-* Run `./scripts/create_certs`.
-* Run `./scripts/gen_app_json`.
-* Run `./scripts/gen_grpc`.
+- Edit `config.toml` so that it has the proper values for your Pi.
+- Run `./scripts/create_certs`.
+- Run `./scripts/gen_app_json`.
+- Run `./scripts/gen_grpc`.
 
 Now you are ready to push the code to the Pi. Do this by running:
 
@@ -102,14 +102,14 @@ Now ssh over to the Pi and `cd` to the directory where you pushed `rpi-clock`.
 From the root of the project, run each of the following in its own terminal
 (currently, each is a server that runs forever in the foreground):
 
-* `./scripts/run_segment7_server`
-* `./scripts/run_controller`
-* `./scripts/run_webserver`
+- `./scripts/run_segment7_server`
+- `./scripts/run_controller`
+- `./scripts/run_webserver`
 
 ## Troubleshooting
 
 Unless you have changed it, your Pi likely defaults to having WiFi
-power saving turned *on*, which is not a great setting for something like a
+power saving turned _on_, which is not a great setting for something like a
 server that you want to be able to connect to 24/7. Reading through
 [this answer](https://raspberrypi.stackexchange.com/questions/34794/how-to-disable-wi-fi-dongle-sleep-mode),
 you should diagnose this by running the following on your Pi:
