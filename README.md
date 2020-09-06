@@ -106,6 +106,42 @@ From the root of the project, run each of the following in its own terminal
 - `./scripts/run_controller`
 - `./scripts/run_webserver`
 
+## systemd
+
+Install `Adafruit_LED_Backpack` so systemd has access to it:
+
+```
+sudo pip3 install --system Adafruit_LED_Backpack
+```
+
+Write the following to `/etc/systemd/system/rpi-clock.service`
+(using the appropriate value on your system for `ExecStart`):
+
+```
+[Unit]
+Description=clock on 7-segment display
+
+[Service]
+Type=simple
+ExecStart=/home/pi/src/rpi-clock/src/simple-server/main.py
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Set the permissions appropriately:
+
+```
+sudo chmod 644 /etc/systemd/system/rpi-clock.service
+```
+
+Now you should be able to do:
+
+```
+sudo systemctl status rpi-clock
+sudo systemctl start rpi-clock
+```
+
 ## Troubleshooting
 
 Unless you have changed it, your Pi likely defaults to having WiFi
