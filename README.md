@@ -142,6 +142,12 @@ sudo systemctl status rpi-clock
 sudo systemctl start rpi-clock
 ```
 
+Run this to ensure it runs when the Raspberry Pi reboots:
+
+```
+sudo systemctl enable rpi-clock
+```
+
 ## Troubleshooting
 
 Unless you have changed it, your Pi likely defaults to having WiFi
