@@ -38,8 +38,9 @@ async def update_time(display):
             display.set_digit(3, minute[1])
             display.set_colon(colon)
             display.write_display()
-        # TODO(mbolin): Be smarter about picking sleep value.
-        await asyncio.sleep(1.0)
+        # 0.25 as suggested by
+        # https://github.com/adafruit/Adafruit_Python_LED_Backpack/blob/7356b4dd8b4bb162d60987878c2cb752fdd017d5/examples/ex_7segment_clock.py#L40
+        await asyncio.sleep(0.25)
 
 
 def get_state():
