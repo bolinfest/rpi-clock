@@ -5,6 +5,6 @@
   "main": "src/main.js",
   "dependencies": {
     "common": "0.0.0",
-    "grpc": "1.9.1"
+    "grpc": "1.24.9"
   }
 }
